@@ -8,6 +8,7 @@ target/
 data/
 logs/
 backups/
+exports/
 
 # IDE
 .idea/
