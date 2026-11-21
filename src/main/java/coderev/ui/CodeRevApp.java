@@ -87,6 +87,11 @@ public class CodeRevApp extends Application {
 
         stage.setScene(new Scene(root, 900, 600));
         stage.show();
+        // Optional initial tab (used by demos/screenshots): -Dcoderev.tab=0|1|2
+        int initialTab = Integer.getInteger("coderev.tab", 0);
+        if (initialTab >= 0 && initialTab < tabs.getTabs().size()) {
+            tabs.getSelectionModel().select(initialTab);
+        }
         refreshAll();
         LOG.info("JavaFX UI started");
     }
@@ -108,6 +113,8 @@ public class CodeRevApp extends Application {
         dueList = new ListView<>();
         recommendationLabel = new Label();
         recommendationLabel.setWrapText(true);
+        recommendationLabel.setMinHeight(48);
+        recommendationLabel.setMaxWidth(Double.MAX_VALUE);
         recommendationLabel.setStyle("-fx-font-size: 13px;");
 
         Button refreshButton = new Button("Refresh");
