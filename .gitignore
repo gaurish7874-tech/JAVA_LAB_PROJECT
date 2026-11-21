@@ -1,0 +1,17 @@
+# Build output
+out/
+target/
+*.class
+*.jar
+
+# Runtime data
+data/
+logs/
+backups/
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
