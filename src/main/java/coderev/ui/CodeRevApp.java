@@ -133,24 +133,32 @@ public class CodeRevApp extends Application {
 
     private Tab buildProblemsTab() {
         problemTable = new TableView<>();
-        problemTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         TableColumn<Problem, Number> idCol = new TableColumn<>("#");
+        idCol.setPrefWidth(45);
         idCol.setCellValueFactory(c -> new SimpleIntegerProperty((int) c.getValue().getId()));
         TableColumn<Problem, String> titleCol = new TableColumn<>("Title");
         titleCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTitle()));
+        titleCol.setPrefWidth(260);
+        withTooltip(titleCol);
         TableColumn<Problem, String> topicCol = new TableColumn<>("Topic");
         topicCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTopic()));
+        topicCol.setPrefWidth(170);
+        withTooltip(topicCol);
         TableColumn<Problem, String> diffCol = new TableColumn<>("Difficulty");
         diffCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDifficulty().name()));
+        diffCol.setPrefWidth(95);
         TableColumn<Problem, Number> confCol = new TableColumn<>("Confidence");
         confCol.setCellValueFactory(c ->
                 new SimpleIntegerProperty(c.getValue().getConfidence().getLevel()));
+        confCol.setPrefWidth(95);
         TableColumn<Problem, Number> revCol = new TableColumn<>("Revisions");
         revCol.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getRevisionCount()));
+        revCol.setPrefWidth(85);
         TableColumn<Problem, String> nextCol = new TableColumn<>("Next revision");
         nextCol.setCellValueFactory(c -> new SimpleStringProperty(
                 c.getValue().getNextRevision() == null ? "-" : c.getValue().getNextRevision().toString()));
+        nextCol.setPrefWidth(115);
         problemTable.getColumns().setAll(idCol, titleCol, topicCol, diffCol, confCol, revCol, nextCol);
 
         Button addButton = new Button("Add problem");
@@ -169,6 +177,18 @@ public class CodeRevApp extends Application {
         BorderPane pane = new BorderPane(problemTable);
         pane.setTop(toolbar);
         return new Tab("Problems", pane);
+    }
+
+    /** Shows the full cell text in a tooltip, so truncated values stay readable. */
+    private static void withTooltip(TableColumn<Problem, String> column) {
+        column.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item);
+                setTooltip(empty || item == null ? null : new javafx.scene.control.Tooltip(item));
+            }
+        });
     }
 
     private Tab buildAnalyticsTab() {
